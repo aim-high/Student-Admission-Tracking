@@ -1,0 +1,35 @@
+# Purpose: Student Admission Tracking updates how many students have applied up till the 
+#	time the script has been run, which will also update how many more student apps are 
+#	needed to fulfill the application target.
+# Parameters: JSON object - sitename, boolean values for grade6th thru grade9th
+# Dependencies: Must have valid refresh token to request new access token.
+# Context: Student Admission Tracking Layout
+# Created: 02-06-2020 by Erica Ching (eching@aimhigh.org)
+# Notes: Calls subscript "Find them"
+
+Set Error Capture [ On ]
+Allow User Abort [ Off ]
+
+# Find sites for current year
+Perform Find [ Restore ]
+Freeze Window
+
+# Loop through found set of sites
+Loop
+	Set Variable [ $site ; Value: SIT_STY__SiteYear::SiteName_c ]
+	Set Variable [ $json ; Value: JSONSetElement ( $json ; 
+	[ "site" ; $site ; 1 ];
+	[ "grade6th" ; True ; 5];
+	[ "grade7th" ; True ; 5];
+	[ "grade8th" ; True ; 5];
+	[ "grade9th" ; True ; 5]
+	)]
+	Perform Script [ Specified: From list ; "Find them" ; Parameter: $json ]
+	
+	Set Variable [ $returnedJSON ; Value: Get ( ScriptResult ) ]
+	Set Field [ SIT_STY__SiteYearCurrent::EnrollmentSubmitted6th ; JSONGetElement ( $returnedJSON ; "grade6th" ) ]
+	Set Field [ SIT_STY__SiteYearCurrent::EnrollmentSubmitted7th ; JSONGetElement ( $returnedJSON ; "grade7th" ) ]
+	Set Field [ SIT_STY__SiteYearCurrent::EnrollmentSubmitted8th ; JSONGetElement ( $returnedJSON ; "grade8th" ) ]
+	Set Field [ SIT_STY__SiteYearCurrent::EnrollmentSubmitted9th ; JSONGetElement ( $returnedJSON ; "grade9th" ) ]
+	Go to Record/Request/Page [ Next ; Exit after last: On ]
+End Loop

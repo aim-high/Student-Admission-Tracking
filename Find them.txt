@@ -1,0 +1,61 @@
+# Purpose: Student Admission Tracking updates how many students have applied up till the 
+#	time the script has been run, which will also update how many more student apps are 
+#	needed to fulfill the application target.
+# Arguments: JSON object - SiteName_c, boolean values for grade6th thru grade9th
+# Dependencies: Must have valid refresh token to request new access token.
+# Context: None
+# Created: 02-06-2020 by Erica Ching (eching@aimhigh.org)
+# Notes: Called from Update Student Admission Tracking
+
+New Window [ Style: Document ; Using layout: "Student App List - General" (STA__StudentApplication) ]
+Show All Records
+Set Variable [ $parameters ; Value: Get ( ScriptParameter ) ]
+
+# Set site and create JSON object
+Set Variable [ $site; Value: JSONGetElement ( $parameters ; "site" ) ]
+Set Variable [ $returnJSON; Value: JSONFormatElements ( JSONSetElement ($returnJSON ; "site" ; $site ; 1) ) ]
+
+# 6th grade
+Set Variable [ $grade6th ; Value: JSONGetElement ($parameters ; "grade6th") ]
+If [ $grade6th ]
+	Set Variable [ $grade ; Value: 6 ]
+	Perform Find [ Restore ]
+	Set Variable [ $count ; Value: Get (FoundCount) ]
+	Set Variable [ $returnJSON ; Value: JSONFormatElements ( JSONSetElement ( $returnJSON ; "grade6th" ; $count ; 2 )) ]
+End If
+Perform Find [ Restore ]
+
+
+# 7th grade
+Set Variable [ $grade7th ; Value: JSONGetElement ($parameters ; "grade7th") ]
+If [ $grade7th ]
+	Set Variable [ $grade ; Value: 7 ]
+	Perform Find [ Restore ]
+	Set Variable [ $count ; Value: Get (FoundCount) ]
+	Set Variable [ $returnJSON ; Value: JSONFormatElements ( JSONSetElement ( $returnJSON ; "grade7th" ; $count ; 2 )) ]
+End If
+Perform Find [ Restore ]
+
+
+# 8th grade
+Set Variable [ $grade8th ; Value: JSONGetElement ($parameters ; "grade8th") ]
+If [ $grade8th ]
+	Set Variable [ $grade ; Value: 8 ]
+	Perform Find [ Restore ]
+	Set Variable [ $count ; Value: Get (FoundCount) ]
+	Set Variable [ $returnJSON ; Value: JSONFormatElements ( JSONSetElement ( $returnJSON ; "grade8th" ; $count ; 2 )) ]
+End If
+Perform Find [ Restore ]
+
+
+# 9th grade
+Set Variable [ $grade9th ; Value: JSONGetElement ($parameters ; "grade9th") ]
+If [ $grade9th ]
+	Set Variable [ $grade ; Value: 9 ]
+	Perform Find [ Restore ]
+	Set Variable [ $count ; Value: Get (FoundCount) ]
+	Set Variable [ $returnJSON ; Value: JSONFormatElements ( JSONSetElement ( $returnJSON ; "grade9th" ; $count ; 2 )) ]
+End If
+
+Close Window [ Current Window ]
+Exit Script [ Text Result: $returnJSON ]
