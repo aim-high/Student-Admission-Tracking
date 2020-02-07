@@ -1,8 +1,8 @@
-# Purpose: Student Admission Tracking updates how many students have applied up till the 
+# Purpose: Called by Update_Tracking script. Student Admission Tracking updates how many students have applied up till the 
 #	time the script has been run, which will also update how many more student apps are 
 #	needed to fulfill the application target.
 # Arguments: JSON object - SiteName_c, boolean values for grade6th thru grade9th
-# Dependencies: Must have valid refresh token to request new access token.
+# Dependencies: None
 # Context: None
 # Created: 02-06-2020 by Erica Ching (eching@aimhigh.org)
 # Notes: Called from Update Student Admission Tracking
