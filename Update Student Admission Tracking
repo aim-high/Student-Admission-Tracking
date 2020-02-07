@@ -53,3 +53,10 @@ Loop
 	Set Field [SIT_STY__SiteYearCurrent::EnrollmentSubmitted9th ; JSONGetElement ( $returnedJSON ; "grade9th" )]
 	Go to Record/Request/Page [Next ; Exit after last: On]
 End Loop
+
+# Sort records by region and save as a PDF 
+Sort Records [Restore ; With dialog: Off]
+Set Variable [$file ; Value: "filemac:" & Get (DesktopPath) & "Student_Admission_Tracking_" & Substitute ( GetAsText (Get (CurrentDate)) ; "/" ; "-" ) & ".pdf"]
+Save Records as PDF [Restore ; With dialog: Off ; "$file" ; Automatically open ; Records being browsed ; Create folders: On]
+
+Exit Script [Text Result: $null]
